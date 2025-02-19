@@ -37,7 +37,7 @@
     "newrelic": "^8.7.1",
     "octicons": "^8.5.0",
     "package.json": "^2.0.1",
-    "passport": "^0.6.0",
+    "passport": "^0.7.0",
     "passport-saml": ">=3.1.0",
     "range_check": "^1.4.0",
     "request": "^2.88.0",
