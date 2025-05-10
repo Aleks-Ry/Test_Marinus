@@ -51,6 +51,7 @@ from dateutil.parser import parse
 from libs3 import IPManager, JobsManager, RemoteMongoConnector
 from libs3.LoggingUtil import LoggingUtil
 from libs3.ZoneManager import ZoneManager
+from security import safe_command
 
 # Globals that need to maintain consistency between threads.
 global_exit_flag = 0
@@ -415,8 +416,7 @@ def run_port_22_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "ssh",
                 "--port=22",
@@ -437,8 +437,7 @@ def run_port_22_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=22",
                 "--xssh",
@@ -469,8 +468,7 @@ def run_port_25_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "smtp",
                 "--port=25",
@@ -491,8 +489,7 @@ def run_port_25_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=25",
                 "--smtp",
@@ -523,8 +520,7 @@ def run_port_25_no_tls_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "smtp",
                 "--port=25",
@@ -544,8 +540,7 @@ def run_port_25_no_tls_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=25",
                 "--smtp",
@@ -576,8 +571,7 @@ def run_port_443_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "tls",
                 "--port=443",
@@ -597,8 +591,7 @@ def run_port_443_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=443",
                 "--tls",
@@ -628,8 +621,7 @@ def run_port_465_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "smtp",
                 "--port=465",
@@ -650,8 +642,7 @@ def run_port_465_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=465",
                 "--smtp",

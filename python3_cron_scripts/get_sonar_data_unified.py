@@ -37,6 +37,7 @@ from libs3 import (
 )
 from libs3.LoggingUtil import LoggingUtil
 from libs3.ZoneManager import ZoneManager
+from security import safe_command
 
 
 def is_running(process):
@@ -211,7 +212,7 @@ def download_remote_files(logger, s, file_reference, data_dir, jobs_manager):
     """
     Download the provided file URL
     """
-    subprocess.run("rm " + data_dir + "*", shell=True)
+    safe_command.run(subprocess.run, "rm " + data_dir + "*", shell=True)
 
     dns_file = download_file(s, file_reference, data_dir)
 

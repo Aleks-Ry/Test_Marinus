@@ -45,6 +45,7 @@ from dateutil.parser import parse
 from libs3 import IPManager, JobsManager, RemoteMongoConnector
 from libs3.LoggingUtil import LoggingUtil
 from libs3.ZoneManager import ZoneManager
+from security import safe_command
 
 global_exit_flag = 0
 global_queue_lock = threading.Lock()
@@ -224,8 +225,7 @@ def run_port_80_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "http",
                 "--port=80",
@@ -247,8 +247,7 @@ def run_port_80_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=80",
                 "--http=/",
@@ -273,8 +272,7 @@ def run_port_443_command(target_list, tnum):
     targets = targets[:-2]
     p1 = subprocess.Popen(["echo", "-e", targets], stdout=subprocess.PIPE)
     if "zgrab2" in global_zgrab_path:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "http",
                 "--port=443",
@@ -297,8 +295,7 @@ def run_port_443_command(target_list, tnum):
                 return json_output
         return json.loads("{}")
     else:
-        p2 = subprocess.Popen(
-            [
+        p2 = safe_command.run(subprocess.Popen, [
                 global_zgrab_path,
                 "--port=443",
                 "--tls",
