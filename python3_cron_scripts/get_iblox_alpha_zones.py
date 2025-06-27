@@ -32,6 +32,7 @@ import requests
 from libs3 import APIHelper, InfobloxHelper, JobsManager, MongoConnector, ZoneIngestor
 from libs3.LoggingUtil import LoggingUtil
 from requests.auth import HTTPBasicAuth
+from security import safe_requests
 
 
 class InfobloxZone(object):
@@ -216,7 +217,7 @@ class InfobloxZone(object):
         else:
             params.update({"_page_id": self.next_page_id})
 
-        return requests.get(
+        return safe_requests.get(
             url,
             params,
             auth=HTTPBasicAuth(self.IH.IBLOX_UNAME, self.IH.IBLOX_PASSWD),

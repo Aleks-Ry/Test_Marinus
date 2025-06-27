@@ -34,11 +34,10 @@ import string
 import subprocess
 import time
 from datetime import datetime
-
-import requests
 from libs3 import DNSManager, GoogleDNS, JobsManager, MongoConnector
 from libs3.LoggingUtil import LoggingUtil
 from libs3.ZoneManager import ZoneManager
+from security import safe_requests
 
 # NOTE: This can be overridden by the command-line parameter
 # CURRENT_FILE_LIST = "http://commoncrawl.s3.amazonaws.com/projects/hyperlinkgraph/cc-main-2017-18-nov-dec-jan/host/cc-main-2017-18-nov-dec-jan-host-vertices.paths.gz"
@@ -74,7 +73,7 @@ def download_file(logger, url, save_location):
     local_filename = save_location + url.split("/")[-1]
     logger.debug(local_filename)
     # NOTE the stream=True parameter
-    req = requests.get(url, stream=True)
+    req = safe_requests.get(url, stream=True)
     with open(local_filename, "wb") as out_f:
         for chunk in req.iter_content(chunk_size=1024):
             if chunk:  # filter out keep-alive new chunks

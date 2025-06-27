@@ -26,6 +26,7 @@ import requests
 from libs3 import APIHelper, DNSManager, InfobloxHelper, MongoConnector
 from libs3.ZoneManager import ZoneManager
 from requests.auth import HTTPBasicAuth
+from security import safe_requests
 
 
 class InfobloxDNSManager(object):
@@ -213,7 +214,7 @@ class InfobloxDNSManager(object):
         retried 3 times in case of ConnectionError exception before the script exists.
         :return:
         """
-        return requests.get(
+        return safe_requests.get(
             (self.__get_record_type_url()),
             auth=HTTPBasicAuth(self.IH.IBLOX_UNAME, self.IH.IBLOX_PASSWD),
             timeout=120,

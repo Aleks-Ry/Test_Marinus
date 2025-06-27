@@ -24,6 +24,7 @@ import backoff
 import requests
 
 from libs3 import APIHelper, JobsManager, MongoConnector, UltraDNSConnector
+from security import safe_requests
 
 
 class UltraDNSHelper(object):
@@ -65,7 +66,7 @@ class UltraDNSHelper(object):
         Makes API calls with exponential retry capabilities using 'backoff'. The API is
         retried 3 times in case of ConnectionError exception before the script exists.
         """
-        return requests.get(url, params, headers=headers, timeout=120)
+        return safe_requests.get(url, params, headers=headers, timeout=120)
 
     @backoff.on_exception(
         backoff.expo,

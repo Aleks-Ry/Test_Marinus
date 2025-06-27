@@ -19,12 +19,11 @@ import json
 import logging
 import time
 from datetime import datetime
-
-import requests
 from libs3 import DNSManager, GoogleDNS, JobsManager, MongoConnector
 from libs3.LoggingUtil import LoggingUtil
 from libs3.ZoneManager import ZoneManager
 from tld import get_fld
+from security import safe_requests
 
 
 def add_to_list(str_to_add, round_three):
@@ -62,7 +61,7 @@ def lookup_hostname(logger, host, zones, round_three):
     Use Google DNS over HTTPS to lookup host
     """
     try:
-        req = requests.get("https://dns.google.com/resolve?name=" + host)
+        req = safe_requests.get("https://dns.google.com/resolve?name=" + host)
     except:
         logger.error("Requests attempt failed!")
         return []

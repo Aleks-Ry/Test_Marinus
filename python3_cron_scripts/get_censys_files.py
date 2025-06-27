@@ -24,11 +24,10 @@ import re
 import subprocess
 import time
 from datetime import datetime
-
-import requests
 from libs3 import RemoteMongoConnector
 from libs3.LoggingUtil import LoggingUtil
 from requests.auth import HTTPBasicAuth
+from security import safe_requests
 
 # Censys authentication information
 CENSYS_API = "https://www.censys.io/api/v1/"
@@ -59,7 +58,7 @@ def download_file(logger, url):
     local_filename = url.split("/")[-1]
     logger.debug(local_filename)
     # NOTE the stream=True parameter
-    req = requests.get(url, stream=True)
+    req = safe_requests.get(url, stream=True)
     with open(local_filename, "wb") as out_f:
         for chunk in req.iter_content(chunk_size=1024):
             if chunk:  # filter out keep-alive new chunks
@@ -99,7 +98,7 @@ def main(logger=None):
         last_timestamp = "0"
 
     # Get the meta data for the currently available file.
-    req = requests.get(
+    req = safe_requests.get(
         CENSYS_API + "data/ipv4", auth=HTTPBasicAuth(CENSYS_APP_ID, CENSYS_SECRET)
     )
 
@@ -110,7 +109,7 @@ def main(logger=None):
         logger.warning(req.text)
 
         time.sleep(60)
-        req = requests.get(
+        req = safe_requests.get(
             CENSYS_API + "data/ipv4", auth=HTTPBasicAuth(CENSYS_APP_ID, CENSYS_SECRET)
         )
         if req.status_code != 200:
@@ -133,7 +132,7 @@ def main(logger=None):
     # Get the location of the details for the new file
     details_url = data_json["results"]["latest"]["details_url"]
 
-    req = requests.get(details_url, auth=HTTPBasicAuth(CENSYS_APP_ID, CENSYS_SECRET))
+    req = safe_requests.get(details_url, auth=HTTPBasicAuth(CENSYS_APP_ID, CENSYS_SECRET))
 
     if req.status_code != 200:
         logger.warning(
@@ -142,7 +141,7 @@ def main(logger=None):
         logger.warning(req.text)
 
         time.sleep(60)
-        req = requests.get(
+        req = safe_requests.get(
             details_url, auth=HTTPBasicAuth(CENSYS_APP_ID, CENSYS_SECRET)
         )
         if req.status_code != 200:

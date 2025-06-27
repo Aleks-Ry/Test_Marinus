@@ -18,9 +18,8 @@ import configparser
 import json
 import logging
 
-import requests
-
 from libs3.ConnectorUtil import ConnectorUtil
+from security import safe_requests
 
 
 class VirusTotal(object):
@@ -81,7 +80,7 @@ class VirusTotal(object):
         :param domain: The name of the domain to search.
         :return: The JSON response or None if not found.
         """
-        req = requests.get(
+        req = safe_requests.get(
             (
                 self.URL
                 + "domain/report"

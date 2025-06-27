@@ -38,6 +38,7 @@ from libs3 import (
 from libs3.LoggingUtil import LoggingUtil
 from libs3.ZoneManager import ZoneManager
 from requests.exceptions import Timeout
+from security import safe_requests
 
 
 def make_https_request(logger, jobs_manager, fb_url, timeout_attempt=0):
@@ -45,7 +46,7 @@ def make_https_request(logger, jobs_manager, fb_url, timeout_attempt=0):
     Utility function so that the script can loop over paged results.
     """
     try:
-        req = requests.get(fb_url)
+        req = safe_requests.get(fb_url)
         req.raise_for_status()
     except requests.exceptions.ConnectionError:
         logger.error("FATAL: Connection Error while fetching the cert list")

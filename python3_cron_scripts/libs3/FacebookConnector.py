@@ -21,6 +21,7 @@ import logging
 import requests
 
 from libs3.ConnectorUtil import ConnectorUtil
+from security import safe_requests
 
 
 class FacebookConnector(object):
@@ -78,7 +79,7 @@ class FacebookConnector(object):
         Exit if there is an error
         """
         try:
-            req = requests.get(
+            req = safe_requests.get(
                 self.BASE_URL
                 + self.VERSION
                 + "/oauth/access_token?client_id="

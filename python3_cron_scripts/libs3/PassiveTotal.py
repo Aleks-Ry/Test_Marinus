@@ -18,11 +18,10 @@ import configparser
 import json
 import logging
 import time
-
-import requests
 from requests.auth import HTTPBasicAuth
 
 from libs3.ConnectorUtil import ConnectorUtil
+from security import safe_requests
 
 
 class PassiveTotal(object):
@@ -76,7 +75,7 @@ class PassiveTotal(object):
         @param name_server The name_server to search for in the whois records.
         """
         parameters = {"field": "nameserver", "query": name_server}
-        req = requests.get(
+        req = safe_requests.get(
             self.URL + "whois/search",
             params=parameters,
             auth=HTTPBasicAuth(self.TOKEN, self.KEY),
@@ -87,7 +86,7 @@ class PassiveTotal(object):
             self._logger.warning(req.status_code)
             self._logger.warning(req.text)
             time.sleep(5)
-            req = requests.get(
+            req = safe_requests.get(
                 self.URL + "whois/search?field=nameserver&query=" + name_server,
                 auth=HTTPBasicAuth(self.TOKEN, self.KEY),
             )
@@ -110,7 +109,7 @@ class PassiveTotal(object):
         @param email The email to search for in the whois records.
         """
         parameters = {"field": "email", "query": email}
-        req = requests.get(
+        req = safe_requests.get(
             self.URL + "whois/search",
             params=parameters,
             auth=HTTPBasicAuth(self.TOKEN, self.KEY),
@@ -121,7 +120,7 @@ class PassiveTotal(object):
             self._logger.warning(req.status_code)
             self._logger.warning(req.text)
             time.sleep(5)
-            req = requests.get(
+            req = safe_requests.get(
                 self.URL + "whois/search?field=email&query=" + email,
                 auth=HTTPBasicAuth(self.TOKEN, self.KEY),
             )
@@ -144,7 +143,7 @@ class PassiveTotal(object):
         @param email The email to search for in the whois records.
         """
         parameters = {"field": "organization", "query": organization}
-        req = requests.get(
+        req = safe_requests.get(
             self.URL + "whois/search",
             params=parameters,
             auth=HTTPBasicAuth(self.TOKEN, self.KEY),
@@ -154,7 +153,7 @@ class PassiveTotal(object):
             self._logger.warning(req.status_code)
             self._logger.warning(req.text)
             time.sleep(5)
-            req = requests.get(
+            req = safe_requests.get(
                 self.URL + "whois/search?field=organization&query=" + organization,
                 auth=HTTPBasicAuth(self.TOKEN, self.KEY),
             )
@@ -176,7 +175,7 @@ class PassiveTotal(object):
         Get Whois based on domain
         """
         parameters = {"query": domain}
-        req = requests.get(
+        req = safe_requests.get(
             self.URL + "whois",
             params=parameters,
             auth=HTTPBasicAuth(self.TOKEN, self.KEY),
@@ -189,7 +188,7 @@ class PassiveTotal(object):
             self._logger.warning(req.status_code)
             self._logger.warning(req.text)
             time.sleep(5)
-            req = requests.get(
+            req = safe_requests.get(
                 self.URL + "whois?&query=" + domain,
                 auth=HTTPBasicAuth(self.TOKEN, self.KEY),
             )
